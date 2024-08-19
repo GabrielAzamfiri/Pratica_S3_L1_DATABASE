@@ -1,0 +1,54 @@
+INSERT INTO public.clienti(
+	 nome, cognome, anno_di_nascita, regione_residenza)
+	VALUES ( 'Mario', 'Pazzo', '2019-07-06', 'Toscana'),( 'Federico', 'Mura', '1998-12-21', 'Sardegna'), ( 'Marco', 'Franco', '2001-05-15', 'Liguria');
+
+
+INSERT INTO public.fatture(
+	 tipologia, importo, iva, id_cliente, data_fattura, numero_fornitore)
+	VALUES ( 'Prodotto', 10, 20, 1, '2024-08-19', 1);
+
+
+INSERT INTO public.fornitori(
+	 denominazione, regione_residenza)
+	VALUES ( 'Fornitore2', 'Lombardia'), ( 'Fornitore3', 'Lazio'),( 'Fornitore4', 'Campania'),( 'Fornitore5', 'Toscana'),( 'Fornitore6', 'Veneto'), ( 'Fornitore7', 'Sicilia'), ( 'Fornitore8', 'Liguria'), ( 'Fornitore9', 'Puglia'), ( 'Fornitore10', 'Abruzzo');
+
+
+INSERT INTO public.fatture(
+	 tipologia, importo, iva, id_cliente, data_fattura, numero_fornitore)
+	VALUES ( 'Prodotto', 20, 20, 9, '2024-08-17', 8);
+
+
+INSERT INTO public.prodotti(
+	 descrizione, in_produzione, in_commercio, data_attivazione)
+	VALUES ( 'tastiera', true , true, '1980-05-12'), ( 'TV', true , true, '1960-01-20'),( 'telefono', true , true, '1990-12-12');
+
+
+1) SELECT  * 
+	FROM public.clienti WHERE nome = 'Mario';
+
+2) SELECT  * 
+      FROM public.clienti WHERE anno_di_nascita = '1994-08-17';
+
+3) SELECT *
+	FROM public.fatture WHERE iva =20;
+
+4) SELECT *
+FROM public.prodotti WHERE  EXTRACT(YEAR FROM data_attivazione) = 2024 
+ and  (in_produzione = true or in_commercio = true);
+
+
+5) SELECT *
+	FROM public.fatture INNER JOIN clienti ON id_cliente = numero_cliente
+	WHERE importo <120;
+
+6)SELECT numero_fattura, importo, iva, data_fattura, denominazione
+	FROM public.fatture INNER JOIN fornitori USING  (numero_fornitore)
+
+7)SELECT data_fattura,  COUNT(*) AS numero_fatture_20
+	FROM public.fatture   WHERE iva =20
+	GROUP BY data_fattura;
+
+8) SELECT data_fattura,  COUNT(*) AS numero_fatture, SUM(importo) AS somma_importi
+	FROM public.fatture  
+	GROUP BY data_fattura
+	

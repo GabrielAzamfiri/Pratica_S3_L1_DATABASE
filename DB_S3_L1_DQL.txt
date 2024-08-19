@@ -48,7 +48,22 @@ FROM public.prodotti WHERE  EXTRACT(YEAR FROM data_attivazione) = 2024
 	FROM public.fatture   WHERE iva =20
 	GROUP BY data_fattura;
 
-8) SELECT data_fattura,  COUNT(*) AS numero_fatture, SUM(importo) AS somma_importi
+8) SELECT EXTRACT(YEAR FROM data_fattura) AS anno,  COUNT(*) AS numero_fatture, SUM(importo) AS somma_importi
 	FROM public.fatture  
-	GROUP BY data_fattura
+	GROUP BY anno
 	
+
+extra 1) SELECT EXTRACT(YEAR FROM data_fattura) AS anno, COUNT(*) AS totale
+	FROM public.fatture  
+	GROUP BY anno
+	HAVING COUNT(TIPOLOGIA = 'A') > 2
+extra 2) 
+SELECT COUNT(*) AS totale, SUM(importo), regione_residenza
+	FROM public.fatture  
+	JOIN fornitori USING (numero_fornitore)
+	GROUP BY regione_residenza
+
+extra 3) SELECT COUNT(DISTINCT numero_cliente) FROM clienti
+JOIN fatture ON numero_cliente = numero_fornitore
+WHERE importo > 50
+AND EXTRACT(YEAR FROM anno_di_nascita ) = '1998'
